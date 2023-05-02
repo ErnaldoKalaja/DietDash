@@ -16,7 +16,7 @@ class Meal {
       title: map['title'] ?? '',
       imgURL: map['image'] != null
           ? 'https://spoonacular.com/recipeImages/' + map['image']
-          : 'default_image_url', // replace 'default_image_url' with the URL of a placeholder image
+          : 'default_image_url',
     );
   }
 }

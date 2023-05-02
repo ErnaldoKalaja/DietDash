@@ -1,4 +1,4 @@
-
+// meal model screen
 import 'meal_model.dart';
 
 class MealPlan {

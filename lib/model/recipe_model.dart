@@ -1,4 +1,4 @@
-
+// recipe class
 class Recipe {
   final String spoonacularSourceUrl;
 
