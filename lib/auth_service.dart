@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:test_project/database_service.dart';
 import 'main.dart';
 
 class AuthService{
@@ -12,11 +13,11 @@ class AuthService{
   }) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password
+        email: email, 
+        password: password
       );
     } on FirebaseAuthException catch (e){
-      authError(e);
+      authError(e);   
     }
   }
 
@@ -27,11 +28,19 @@ class AuthService{
   }) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password
+        email: email, 
+        password: password
+      ).then(
+        (credential) {
+          DatabaseService.registerEmail(
+            userName: name, 
+            email: email,
+            userId: credential.user!.uid,
+          );
+        }
       );
     } on FirebaseAuthException catch (e){
-      authError(e);
+      authError(e);   
     }
   }
 
@@ -63,13 +72,12 @@ class AuthService{
     GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: [
         'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
       ],
     );
     GoogleSignInAccount? user = await googleSignIn.signIn();
-
+    
     GoogleSignInAuthentication auth = await user!.authentication;
-
+    
     final credential = GoogleAuthProvider.credential(
       accessToken: auth.accessToken,
       idToken: auth.idToken,
@@ -77,7 +85,7 @@ class AuthService{
     try {
       await FirebaseAuth.instance.signInWithCredential(credential);
     } on FirebaseAuthException catch (e){
-      authError(e);
+      authError(e);   
     }
   }
 
