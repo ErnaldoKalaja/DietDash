@@ -7,7 +7,7 @@ import 'auth_service.dart';
 class HomePage extends StatelessWidget{
   HomePage({super.key});
 
-  void signOut() => AuthService.signOut();
+  void signOut() => AuthService().signOut();
 
   final user = FirebaseAuth.instance.currentUser!;
 

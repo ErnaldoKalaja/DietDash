@@ -7,7 +7,15 @@ import 'main.dart';
 class AuthService{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  static void signInEmail({
+  final DatabaseService databaseService = DatabaseService();
+  
+  GoogleSignIn googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+  );
+
+  void signInEmail({
     required String email,
     required String password,
   }) async {
@@ -21,7 +29,7 @@ class AuthService{
     }
   }
 
-  static void signUpEmail({
+  void signUpEmail({
     required String name,
     required String email,
     required String password,
@@ -32,7 +40,7 @@ class AuthService{
         password: password
       ).then(
         (credential) {
-          DatabaseService.registerEmail(
+          databaseService.registerEmail(
             userName: name, 
             email: email,
             userId: credential.user!.uid,
@@ -64,16 +72,12 @@ class AuthService{
     );
   }
 
-  static void signOut(){
+  void signOut(){
     FirebaseAuth.instance.signOut();
+    googleSignIn.disconnect();
   }
 
-  static signInGoogle() async {
-    GoogleSignIn googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-      ],
-    );
+  void signInGoogle() async {
     GoogleSignInAccount? user = await googleSignIn.signIn();
     
     GoogleSignInAuthentication auth = await user!.authentication;
