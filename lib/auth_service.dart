@@ -52,7 +52,7 @@ class AuthService{
     }
   }
 
-  static void authError(FirebaseAuthException e){
+  void authError(FirebaseAuthException e){
     showDialog(
       context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
@@ -87,7 +87,20 @@ class AuthService{
       idToken: auth.idToken,
     );
     try {
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential)
+        .then(
+          (credential) {
+            var userId = credential.user!.uid;
+            var email = credential.user!.email!;
+            var userName = credential.user!.displayName!;
+            databaseService.registerGoogle(
+              userId: userId, 
+              email: email, 
+              userName: userName
+            );
+          }
+        );
+
     } on FirebaseAuthException catch (e){
       authError(e);   
     }
