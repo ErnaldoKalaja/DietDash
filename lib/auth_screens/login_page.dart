@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import '../services/auth_service.dart';
+import '../components/login_button.dart';
+import '../components/login_textbox.dart';
 
-import 'auth_service.dart';
-import 'components/login_button.dart';
-import 'components/login_textbox.dart';
-
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  // clientId: 'your-client_id.apps.googleusercontent.com',
-  // scopes: scopes,
-);
 
 class LoginPage extends StatelessWidget{
   LoginPage({
-  super.key,
-  required this.onPressed,
+    super.key,
+    required this.onPressed,
   });
+  
+  final AuthService authService = AuthService();
 
   final Function()? onPressed;
 
@@ -25,13 +19,13 @@ class LoginPage extends StatelessWidget{
   final passwordController = TextEditingController();
 
   void signIn () {
-    AuthService.signInEmail(
+    authService.signInEmail(
         email: emailController.text,
         password: passwordController.text
     );
   }
 
-  void signInGoogle () => AuthService.signInGoogle();
+  void signInGoogle () => authService.signInGoogle();
 
   @override
   Widget build(BuildContext context){

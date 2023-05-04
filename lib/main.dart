@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:test_project/screens/grocery_screen.dart';
 import 'package:test_project/screens/search_screen.dart';
-import 'home_page.dart'; // Import home_page.dart
+import 'auth_screens/profile_page.dart'; // Import home_page.dart
 
-import 'auth_page.dart';
+import 'auth_screens/auth_page.dart';
 import 'firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _children = [
     SearchScreen(),
     GroceryScreen(),
-    HomePage(), // Add HomePage to the list
+    ProfilePage(), // Add ProfilePage to the list
   ];
 
   void onTabTapped(int index) {

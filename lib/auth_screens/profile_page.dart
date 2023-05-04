@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'auth_service.dart';
+import '../services/auth_service.dart';
 
 
-class HomePage extends StatelessWidget{
-  HomePage({super.key});
+class ProfilePage extends StatelessWidget{
+  ProfilePage({super.key});
 
-  void signOut() => AuthService.signOut();
+  void signOut() => AuthService().signOut();
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget{
                   child: const Text("Log out"),
                 ),
                 Text(user.email!),
+                Text(AuthService.getCurrentUser().email),
               ]
           )
       ),

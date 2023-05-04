@@ -1,13 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:test_project/database_service.dart';
-import 'main.dart';
+import 'package:test_project/services/database_service.dart';
+import '../main.dart';
 
 class AuthService{
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  static void signInEmail({
+  final DatabaseService databaseService = DatabaseService();
+  
+  GoogleSignIn googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+  );
+
+  void signInEmail({
     required String email,
     required String password,
   }) async {
@@ -21,7 +29,7 @@ class AuthService{
     }
   }
 
-  static void signUpEmail({
+  void signUpEmail({
     required String name,
     required String email,
     required String password,
@@ -32,7 +40,7 @@ class AuthService{
         password: password
       ).then(
         (credential) {
-          DatabaseService.registerEmail(
+          databaseService.registerEmail(
             userName: name, 
             email: email,
             userId: credential.user!.uid,
@@ -44,7 +52,7 @@ class AuthService{
     }
   }
 
-  static void authError(FirebaseAuthException e){
+  void authError(FirebaseAuthException e){
     showDialog(
       context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
@@ -64,16 +72,12 @@ class AuthService{
     );
   }
 
-  static void signOut(){
+  void signOut(){
     FirebaseAuth.instance.signOut();
+    googleSignIn.disconnect();
   }
 
-  static signInGoogle() async {
-    GoogleSignIn googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-      ],
-    );
+  void signInGoogle() async {
     GoogleSignInAccount? user = await googleSignIn.signIn();
     
     GoogleSignInAuthentication auth = await user!.authentication;
@@ -83,10 +87,27 @@ class AuthService{
       idToken: auth.idToken,
     );
     try {
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential)
+        .then(
+          (credential) {
+            var userId = credential.user!.uid;
+            var email = credential.user!.email!;
+            var userName = credential.user!.displayName!;
+            databaseService.registerGoogle(
+              userId: userId, 
+              email: email, 
+              userName: userName
+            );
+          }
+        );
+
     } on FirebaseAuthException catch (e){
       authError(e);   
     }
+  }
+
+  static getCurrentUser(){
+    return FirebaseAuth.instance.currentUser!;
   }
 
 }
