@@ -35,6 +35,8 @@ class LoginTextbox extends StatelessWidget {
             ),
           ),
           hintText: hintText,
+          filled: true,
+          fillColor: Colors.white,
         ),
         controller: controller,
         obscureText: obscureText,
