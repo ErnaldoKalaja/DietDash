@@ -24,6 +24,7 @@ class ProfilePage extends StatelessWidget{
                   child: const Text("Log out"),
                 ),
                 Text(user.email!),
+                Text(AuthService.getCurrentUser().email),
               ]
           )
       ),

@@ -106,4 +106,8 @@ class AuthService{
     }
   }
 
+  static getCurrentUser(){
+    return FirebaseAuth.instance.currentUser!;
+  }
+
 }
