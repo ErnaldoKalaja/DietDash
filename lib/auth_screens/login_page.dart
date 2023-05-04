@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'auth_service.dart';
-import 'components/login_button.dart';
-import 'components/login_textbox.dart';
+import '../services/auth_service.dart';
+import '../components/login_button.dart';
+import '../components/login_textbox.dart';
 
 
-class RegisterPage extends StatelessWidget{
-  RegisterPage({
+class LoginPage extends StatelessWidget{
+  LoginPage({
     super.key,
     required this.onPressed,
   });
-
+  
   final AuthService authService = AuthService();
 
   final Function()? onPressed;
 
-  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUp () {
-    authService.signUpEmail(
-        name: nameController.text,
+  void signIn () {
+    authService.signInEmail(
         email: emailController.text,
         password: passwordController.text
     );
@@ -39,13 +37,8 @@ class RegisterPage extends StatelessWidget{
               child: Column(
                 children: [
                   const SizedBox(height: 100),
-                  const Text("Register Page"),
+                  const Text("Login Page"),
                   const SizedBox(height: 100),
-                  //Name Field
-                  LoginTextbox(
-                      hintText: 'Name',
-                      controller: nameController
-                  ),
                   //Email Field
                   LoginTextbox(
                     hintText: 'Email',
@@ -54,22 +47,22 @@ class RegisterPage extends StatelessWidget{
                   ),
                   //Password Field
                   LoginTextbox(
-                    hintText: 'Password (6 characters minimum)',
+                    hintText: 'Password',
                     controller: passwordController,
                     obscureText: true,
                   ),
                   const SizedBox(height:15),
                   LoginButton(
-                    onPressed: signUp,
-                    buttonText: "Create Account",
+                    onPressed: signIn,
+                    buttonText: "Sign In",
                   ),
                   const SizedBox(height:30),
                   SignInButton(Buttons.GoogleDark, onPressed: signInGoogle),
                   const SizedBox(height:20),
-                  const Text("Already have an account?"),
+                  const Text("New User?"),
                   ElevatedButton(
                       onPressed: onPressed,
-                      child: const Text("Go to Login Page")
+                      child: const Text("Create account")
                   )
 
                 ],
