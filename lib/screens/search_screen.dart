@@ -81,7 +81,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
                 RichText(
                   text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 25),
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 25),
                       children: [
                         TextSpan(
                             text:  _targetCalories.truncate().toString(),
@@ -138,7 +138,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        _diet = value;
+                        _diet = value!;
                       });
                     },
                     value: _diet,

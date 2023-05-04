@@ -9,7 +9,7 @@ import '../services/api_services.dart';
 class MealsScreen extends StatefulWidget {
   //It returns a final mealPlan variable
   final MealPlan mealPlan;
-  MealsScreen({this.mealPlan});
+  MealsScreen({required this.mealPlan});
 
   @override
   _MealsScreenState createState() => _MealsScreenState();

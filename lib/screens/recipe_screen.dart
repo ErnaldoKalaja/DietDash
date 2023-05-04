@@ -8,7 +8,7 @@ class RecipeScreen extends StatefulWidget {
   final String mealType;
   final Recipe recipe;
 
-  RecipeScreen({this.mealType, this.recipe});
+  RecipeScreen({required this.mealType, required this.recipe});
 
 
   @override

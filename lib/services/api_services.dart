@@ -12,7 +12,7 @@ class ApiService {
   final String _baseURL = "api.spoonacular.com";
   static const String API_KEY ="ffba4c20eef44167a68f336e4a196007";
 
-  Future<MealPlan> generateMealPlan({int targetCalories, String diet}) async {
+  Future<MealPlan> generateMealPlan({required int targetCalories, required String diet}) async {
     print("Generate Meal Plan - Target Calories: $targetCalories, Diet: $diet");
     //check if diet is null
     if (diet == 'None') diet = '';
