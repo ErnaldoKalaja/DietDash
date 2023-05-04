@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import 'auth_service.dart';
+import 'components/login_button.dart';
+import 'components/login_textbox.dart';
+
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  // Optional clientId
+  // clientId: 'your-client_id.apps.googleusercontent.com',
+  // scopes: scopes,
+);
+
+class LoginPage extends StatelessWidget{
+  LoginPage({
+  super.key,
+  required this.onPressed,
+  });
+
+  final Function()? onPressed;
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void signIn () {
+    AuthService.signInEmail(
+        email: emailController.text,
+        password: passwordController.text
+    );
+  }
+
+  void signInGoogle () => AuthService.signInGoogle();
+
+  @override
+  Widget build(BuildContext context){
+    return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 100),
+                  const Text("Login Page"),
+                  const SizedBox(height: 100),
+                  //Email Field
+                  LoginTextbox(
+                    hintText: 'Email',
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  //Password Field
+                  LoginTextbox(
+                    hintText: 'Password',
+                    controller: passwordController,
+                    obscureText: true,
+                  ),
+                  const SizedBox(height:15),
+                  LoginButton(
+                    onPressed: signIn,
+                    buttonText: "Sign In",
+                  ),
+                  const SizedBox(height:30),
+                  SignInButton(Buttons.GoogleDark, onPressed: signInGoogle),
+                  const SizedBox(height:20),
+                  const Text("New User?"),
+                  ElevatedButton(
+                      onPressed: onPressed,
+                      child: const Text("Create account")
+                  )
+
+                ],
+              ),
+            ),
+          ),
+        )
+    );
+  }
+}

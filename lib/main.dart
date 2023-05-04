@@ -1,8 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:test_project/screens/grocery_screen.dart';
 import 'package:test_project/screens/search_screen.dart';
+import 'home_page.dart'; // Import home_page.dart
 
-void main() => runApp(MyApp());
+import 'auth_page.dart';
+import 'firebase_options.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,7 +27,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.orange[500],
       ),
-      home: MyHomePage(),
+      home: AuthPage(),
+      navigatorKey: navigatorKey,
     );
   }
 }
@@ -28,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _children = [
     SearchScreen(),
     GroceryScreen(),
+    HomePage(), // Add HomePage to the list
   ];
 
   void onTabTapped(int index) {
@@ -51,6 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.local_grocery_store),
             label: 'Grocery',
+          ),
+          BottomNavigationBarItem(  // Add a new BottomNavigationBarItem for the home page
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),
